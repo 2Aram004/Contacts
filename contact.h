@@ -14,6 +14,7 @@ public:
 	~Contact(){fout.close();}
 
 private:
+	struct Datas;
 	void Add();
 	void Delete();
 	void Change();
