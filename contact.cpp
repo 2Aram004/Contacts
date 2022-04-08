@@ -100,7 +100,7 @@ void Contact::Add()
 	std::cin >> datas.address;
 
 		contacts.emplace(count, datas);
-++count;
+	++count;
 		ChangeInFile();
 }
 
