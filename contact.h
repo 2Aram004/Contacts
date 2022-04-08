@@ -13,16 +13,6 @@ public:
 	void Start();
 	~Contact(){fout.close();}
 
-public:
-
-	struct Datas
-	{
-		std::string name;
-		std::string lastname;
-		std::string number;
-		std::string address;
-	};
-
 private:
 	void Add();
 	void Delete();
@@ -36,7 +26,15 @@ private:
 	void ChangeLastName(std::unordered_map<int, Datas>::iterator);
 	void ChangeAddress(std::unordered_map<int, Datas>::iterator);
 	void ChangeNumber(std::unordered_map<int, Datas>::iterator);
-
+private:
+	struct Datas
+	{
+		std::string name;
+		std::string lastname;
+		std::string number;
+		std::string address;
+	};
+	
 	std::ofstream fout;
 	std::ifstream fin;
 	int count = 1;
