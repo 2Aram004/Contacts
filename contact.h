@@ -15,7 +15,7 @@ public:
 
 public:
 
-    struct Datas
+	struct Datas
 	{
 		std::string name;
 		std::string lastname;
