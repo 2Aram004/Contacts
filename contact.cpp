@@ -1,7 +1,5 @@
 #include "contact.h"
 
-using FP = void(Contact::*)(std::unordered_map<std::string, Contact::Datas>::iterator);
-
 Contact::Contact() noexcept
 {
 	user_command.emplace("add", &Contact::Add);
