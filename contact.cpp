@@ -79,10 +79,7 @@ void Contact::Delete()
 	auto it = contacts.find(delete_contact_number);
 
 	if(it != contacts.end()) {
-		 		it->second.name = " ";
-		 		it->second.lastname = " ";
-		 		it->second.number = " ";
-		 		it->second.address = " ";
+		 	contacts.erase(it);
 			ChangeInFile();
 
 			}  else { std::cout << "Contact was not found"; }
