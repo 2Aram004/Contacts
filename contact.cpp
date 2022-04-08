@@ -127,8 +127,6 @@ void Contact::GetDatas()
 	std::cout << "\n\nEnter your command please ";
 	std::cin >> command;
 
-    if(command == "stop") break;
-
 		Fptr function_pointer = user_command[command];
    		(this->*function_pointer)();
 	}
