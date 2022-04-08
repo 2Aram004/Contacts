@@ -56,8 +56,8 @@ void Contact::ChangeInFile()
 		fout << it->first << '\n';
 		fout << it->second.name << '\n';
 		fout << it->second.lastname << '\n';
+		fout << it->number << '\n';
 		fout << it->second.address << '\n';
-		fout << it->second.number << '\n';
 		        }
 	    fout.close();
 }
@@ -79,11 +79,11 @@ void Contact::Delete()
 	auto it = contacts.find(delete_contact_number);
 
 	if(it != contacts.end()) {
-		 	contacts.erase(it);
-			ChangeInFile();
+		contacts.erase(it);
+		ChangeInFile();
 
-			}  else { std::cout << "Contact was not found"; }
-	}
+	}  else { std::cout << "Contact was not found"; }
+}
 
 void Contact::Add()
 {
@@ -96,7 +96,7 @@ void Contact::Add()
 	std::cout << "\nEnter phone number please ";
 	std::cin >> datas.number;
 
-	std::cout << "Enter address please ";
+	std::cout << "\nEnter address please ";
 	std::cin >> datas.address;
 
 		contacts.emplace(count, datas);
