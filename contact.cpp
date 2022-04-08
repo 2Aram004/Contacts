@@ -58,8 +58,8 @@ void Contact::ChangeInFile()
 		fout << it->second.lastname << '\n';
 		fout << it->number << '\n';
 		fout << it->second.address << '\n';
-		        }
-	    fout.close();
+	}
+	fout.close();
 }
 
 void Contact::CommandList() const
@@ -112,7 +112,7 @@ void Contact::Save()
 		fout << it->second.lastname << '\n';
 		fout << it->second.address << '\n';
 		fout << it->second.number << '\n';
-			}
+	}
 }
 
 void Contact::GetDatas()
@@ -136,7 +136,7 @@ void Contact::Read()
 		getline(fin, str);
 		std::cout << str;
 		std::cout << '\n';
-			}
+	}
 	fin.close();
 }
 
