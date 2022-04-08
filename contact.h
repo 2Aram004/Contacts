@@ -6,7 +6,6 @@
 #include <fstream>
 #include <string>
 
-
 class Contact
 {
 public:
