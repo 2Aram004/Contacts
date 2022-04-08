@@ -50,5 +50,4 @@ private:
 	std::string change_data;
 	int delete_contact_number;
 };
-
 #endif
