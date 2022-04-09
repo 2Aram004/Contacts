@@ -1,7 +1,7 @@
-#include <contact.h>
+#include "contact.h"
 
 int main()
 {
 	Contact object;	
-	object.start();
+	object.Start();
 }
