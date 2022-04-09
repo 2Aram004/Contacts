@@ -84,7 +84,6 @@ void Contact::CommandList() const
 void Contact::Delete()
 {
 	SetMap();
-
 	std::unordered_map<int, Datas>::iterator it = contacts.end();
 
 	do {
@@ -97,7 +96,6 @@ void Contact::Delete()
 
 	contacts.erase(it);
 	ChangeInFile();
-
 }
 
 void Contact::Add()
