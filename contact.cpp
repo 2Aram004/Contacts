@@ -99,9 +99,9 @@ void Contact::Add()
 	std::cout << "\nEnter address please ";
 	std::cin >> datas.address;
 
-		contacts.emplace(count, datas);
+	contacts.emplace(count, datas);
 	++count;
-		ChangeInFile();
+	ChangeInFile();
 }
 
 void Contact::Save()
@@ -124,8 +124,8 @@ void Contact::GetDatas()
 	std::cout << "\n\nEnter your command please ";
 	std::cin >> command;
 
-		Fptr function_pointer = user_command[command];
-   		(this->*function_pointer)();
+	Fptr function_pointer = user_command[command];
+   	(this->*function_pointer)();
 	}
 }
 
