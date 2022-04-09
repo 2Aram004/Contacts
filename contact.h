@@ -12,21 +12,23 @@ public:
 	Contact() noexcept;
 	void Start();
 	~Contact(){fout.close();}
-
+	
 private:
-	struct Datas;
+	struct Datas; // forward decleration
 	void Add();
 	void Delete();
 	void Change();
 	void Read();
+	void Stop();
 	void GetDatas();
-	void Save();
 	void CommandList() const;
 	void ChangeInFile();
+	void SetMap();
 	void ChangeName(std::unordered_map<int, Datas>::iterator);
 	void ChangeLastName(std::unordered_map<int, Datas>::iterator);
 	void ChangeAddress(std::unordered_map<int, Datas>::iterator);
 	void ChangeNumber(std::unordered_map<int, Datas>::iterator);
+
 private:
 	struct Datas
 	{
@@ -35,7 +37,7 @@ private:
 		std::string number;
 		std::string address;
 	};
-	
+
 	std::ofstream fout;
 	std::ifstream fin;
 	int count = 1;
