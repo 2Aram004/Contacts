@@ -143,17 +143,18 @@ void Contact::Read()
 void Contact::Change()
 {
 	using fptr = void(Contact::*)(std::unordered_map<int, Contact::Datas>::iterator);
-    do {    
+    	
+	do {    
 	    std::cout << "\nWhich contact do you want do change(number) ";
 	    std::cin >> change_contact_number;
 
-    } while(change_contact_number <= count);
+    	} while(change_contact_number <= count);
 
         std::unordered_map<int, Contact::Datas>::iterator it = contacts.find(change_contact_number);
 
-		std::cout << "Which data do you want to change? ";
-		std::cin >> change_data;
+	std::cout << "Which data do you want to change? ";
+	std::cin >> change_data;
 
-		fptr function = changed_data[change_data];
-		(this->*function)(it);
+	fptr function = changed_data[change_data];
+	(this->*function)(it);
 }
