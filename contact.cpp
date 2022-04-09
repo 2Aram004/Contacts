@@ -157,9 +157,3 @@ void Contact::Change()
 		fptr function = changed_data[change_data];
 		(this->*function)(it);
 }
-
-int main()
-{
-	Contact contact;
-	contact.Start();
-}
