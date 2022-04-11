@@ -29,28 +29,28 @@ void Contact::Start()
 	ChangeInFile();
 }
 
-void Contact::ChangeName(std::unordered_map<int, Datas>::iterator it)
+void Contact::ChangeName(const std::unordered_map<int, Datas>::iterator it)
 {
 	std::cout << "\nEnter new name ";
 	std::cin >> it->second.name;
 	ChangeInFile();
 }
 
-void Contact::ChangeLastName(std::unordered_map<int, Datas>::iterator it)
+void Contact::ChangeLastName(const std::unordered_map<int, Datas>::iterator it)
 {
 	std::cout << "\nEnter new lastname ";
 	std::cin >> it->second.lastname;
 	ChangeInFile();
 }
 
-void Contact::ChangeNumber(std::unordered_map<int, Datas>::iterator it)
+void Contact::ChangeNumber(const std::unordered_map<int, Datas>::iterator it)
 {
 	std::cout << "\nEnter new number ";
 	std::cin >> it->second.number;
 	ChangeInFile();
 }
 
-void Contact::ChangeAddress(std::unordered_map<int, Datas>::iterator it)
+void Contact::ChangeAddress(const std::unordered_map<int, Datas>::iterator it)
 {
 	std::cout << "\nEnter new address ";
 	std::cin >> it->second.address;
@@ -84,6 +84,7 @@ void Contact::CommandList() const
 void Contact::Delete()
 {
 	SetMap();
+
 	std::unordered_map<int, Datas>::iterator it = contacts.end();
 
 	do {
@@ -96,11 +97,15 @@ void Contact::Delete()
 
 	contacts.erase(it);
 	ChangeInFile();
+
 }
 
 void Contact::Add()
 {
-	std::cout << "This contact's ID is " << count << '\n';
+	SetMap();
+	ID_of_contact = contacts.size() + 1;
+
+	std::cout << "This contact's ID is " << ID_of_contact << '\n';
 
 	std::cout << "Enter name please ";
 	std::cin >> datas.name;
@@ -114,15 +119,15 @@ void Contact::Add()
 	std::cout << "\nEnter address please ";
 	std::cin >> datas.address;
 
-	contacts.emplace(count, datas);
-	++count;
+	contacts.emplace(ID_of_contact, datas);
+	++ID_of_contact;
 	ChangeInFile();
 }
 
 void Contact::GetDatas()
 {
 	using Fptr = void(Contact::*)();
-	std::unordered_map<std::string, Fptr>::iterator iter;
+	std::unordered_map<std::string, Fptr>::const_iterator iter;
 
 	while(command != "stop") {
 
@@ -189,16 +194,16 @@ void Contact::SetMap()
 }
 void Contact::Change()
 {
-	SetMap();	
+	SetMap();
 	using fptr = void(Contact::*)(std::unordered_map<int, Contact::Datas>::iterator);
 
     do {    
 	    std::cout << "\nWhich contact do you want do change (Enter your contact's ID) ";
 	    std::cin >> change_contact_number;
 
-    } while(change_contact_number > count);
+    } while(change_contact_number > ID_of_contact);
 
-	std::unordered_map<int, Contact::Datas>::iterator it = contacts.find(change_contact_number);
+	const std::unordered_map<int, Contact::Datas>::iterator it = contacts.find(change_contact_number);
 	auto it2 = changed_data.end();	
 
 	do {
@@ -212,4 +217,10 @@ void Contact::Change()
 		fptr function = changed_data[change_data];
 		(this->*function)(it);
 
+}
+
+int main()
+{
+	Contact contact;
+	contact.Start();
 }
