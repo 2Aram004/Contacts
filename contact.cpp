@@ -218,9 +218,3 @@ void Contact::Change()
 		(this->*function)(it);
 
 }
-
-int main()
-{
-	Contact contact;
-	contact.Start();
-}
