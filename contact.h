@@ -40,7 +40,7 @@ private:
 
 	std::ofstream fout;
 	std::ifstream fin;
-	int count = 1;
+	int ID_of_contact = 1;
 	std::string str;
 	std::string command;
 	Datas datas;
