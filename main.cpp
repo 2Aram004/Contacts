@@ -2,6 +2,6 @@
 
 int main()
 {
-	Contact object;	
-	object.Start();
+	Contact contact;	
+	contact.start();
 }
