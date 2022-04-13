@@ -10,37 +10,45 @@ class Contact
 {
 public:
 	Contact() noexcept;
-	void Start();
-	~Contact(){fout.close();}
+	void start();
+	~Contact(){write.close();}
 	
 private:
-	struct Datas; // forward decleration
-	void Add();
-	void Delete();
-	void Change();
-	void Read();
-	void Stop();
-	void GetDatas();
-	void CommandList() const;
-	void ChangeInFile();
-	void SetMap();
-	void ChangeName(std::unordered_map<int, Datas>::iterator);
-	void ChangeLastName(std::unordered_map<int, Datas>::iterator);
-	void ChangeAddress(std::unordered_map<int, Datas>::iterator);
-	void ChangeNumber(std::unordered_map<int, Datas>::iterator);
 
-private:
 	struct Datas
 	{
 		std::string name;
 		std::string lastname;
 		std::string number;
 		std::string address;
+		std::string email;
 	};
 
-	std::ofstream fout;
-	std::ifstream fin;
-	int ID_of_contact = 1;
+	void addContact();
+	void deleteContact();
+	void changeData();
+	void readAllContacts();
+	void stop();
+	void findContact();
+	void getDatas();
+	void commandList() const;
+	void changeInFile();
+	void setMap();
+	bool checkFirstLetter(char);
+	bool checkNumber(const std::string&);
+	bool checkEmail(const std::string&);
+	void changeName(const std::unordered_map<int, Datas>::iterator);
+	void changeLastName(const std::unordered_map<int, Datas>::iterator);
+	void changeAddress(const std::unordered_map<int, Datas>::iterator);
+	void changeNumber(const std::unordered_map<int, Datas>::iterator);
+	void changeEmail(const std::unordered_map<int, Datas>::iterator);
+
+private:
+
+	std::ofstream write;
+	std::ifstream read;
+	std::string name_of_file;
+	int ID_of_contact = 0;
 	std::string str;
 	std::string command;
 	Datas datas;
