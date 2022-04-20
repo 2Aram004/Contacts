@@ -5,16 +5,16 @@
 #include <unordered_map>
 #include <fstream>
 #include <string>
+#include <regex>
 
 class Contact
 {
 public:
 	Contact() noexcept;
 	void start();
-	~Contact(){write.close();}
+	~Contact() {}
 	
 private:
-
 	struct Datas
 	{
 		std::string name;
@@ -22,11 +22,11 @@ private:
 		std::string number;
 		std::string address;
 		std::string email;
-	};
+	}; // Datas
 
 	void addContact();
 	void deleteContact();
-	void changeData();
+	void changeUserData();
 	void readAllContacts();
 	void stop();
 	void findContact();
@@ -34,29 +34,25 @@ private:
 	void commandList() const;
 	void changeInFile();
 	void setMap();
+	std::pair<bool, int> find(const std::string&);
 	bool checkFirstLetter(char);
 	bool checkNumber(const std::string&);
 	bool checkEmail(const std::string&);
-	void changeName(const std::unordered_map<int, Datas>::iterator);
-	void changeLastName(const std::unordered_map<int, Datas>::iterator);
-	void changeAddress(const std::unordered_map<int, Datas>::iterator);
-	void changeNumber(const std::unordered_map<int, Datas>::iterator);
-	void changeEmail(const std::unordered_map<int, Datas>::iterator);
 
 private:
-
 	std::ofstream write;
 	std::ifstream read;
-	std::string name_of_file;
-	int ID_of_contact = 0;
+	std::string nameOfFile;
+	int idOfContact = 0;
 	std::string str;
 	std::string command;
-	Datas datas;
-	std::unordered_map<std::string, void(Contact::*)()> user_command;
+	Datas userDatas;
+	std::unordered_map<std::string, void(Contact::*)()> userCommand;
 	std::unordered_map<int, Datas> contacts;
-	std::unordered_map<std::string, void(Contact::*)(std::unordered_map<int, Datas>::iterator)> changed_data;
-	int change_contact_number;
-	std::string change_data;
-	int delete_contact_number;
+	std::unordered_map<std::string, void(Contact::*)(std::unordered_map<int, Datas>::iterator)> changedData;
+	int changeContactNumber;
+	std::string changeData;
+	std::string changeContactData;
+	std::string changeContactName;
 };
-#endif
+#endif // _CONTACT_H
