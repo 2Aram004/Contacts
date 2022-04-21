@@ -1,0 +1,6 @@
+Enter add to add.
+Enter read to read.
+Enter change to change.
+Enter delete to delete.
+Enter find to find.
+Enter stop to stop.
