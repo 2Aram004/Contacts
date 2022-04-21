@@ -357,9 +357,3 @@ void Contact::changeUserData()
 
 	} while(changeContactName != "name" || changeContactName != "lastname" || changeContactName != "address" || changeContactName != "email" || changeContactName != "number");
 }
-
-int main()
-{
-	Contact userContact;
-	userContact.start();
-}
