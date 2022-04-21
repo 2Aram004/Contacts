@@ -315,7 +315,6 @@ void Contact::changeUserData()
 
 		changeInFile();
 		return;
-
 		
 	} else if(changeContactName == "address") {
 
@@ -351,8 +350,6 @@ void Contact::changeUserData()
 
 		changeInFile();
 		return;
-
-
 	 }
 
 	} while(changeContactName != "name" || changeContactName != "lastname" || changeContactName != "address" || changeContactName != "email" || changeContactName != "number");
