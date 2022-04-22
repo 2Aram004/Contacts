@@ -1,4 +1,4 @@
-#include "contact.h"
+#include "usercontacts.h"
 
 Contact::Contact() noexcept
 {
@@ -19,10 +19,15 @@ void Contact::stop()
 
 void Contact::start()
 {
-	std::cout << "\nEnter the name of your file please ";
-	std::cin >> nameOfFile;
+	do {
+		std::cout << "\nEnter the name of your file please(file must exist)\t";
+		std::cin >> nameOfFile;
 
-	commandList();
+		read.open(nameOfFile);
+
+	} while(!read.is_open());
+
+	read.close();
 	getDatas();
 }
 
@@ -30,7 +35,7 @@ void Contact::changeInFile()
 {
 	write.open(nameOfFile);
 
-	for(auto it : contacts) {
+	for (auto it : contacts) {
 		write << it.first << '\n';
 		write << it.second.name << '\n';
 		write << it.second.lastname << '\n';
@@ -41,25 +46,22 @@ void Contact::changeInFile()
 	write.close();
 }
 
-void Contact::commandList() const
-{
-	std::cout << "\nEnter add to add contact\n";
-	std::cout << "Enter change to change data\n";
-	std::cout << "Enter delete to delete contact\n";
-	std::cout << "Enter read to read all contacts\n";
-	std::cout << "Enter find to find contact\n";
-	std::cout << "Enter stop to stop\n";
-}
-
 void Contact::deleteContact()
 {
 	setMap();
-	std::string deleteData;
+	if (contacts.size() == 0) {
+		std::cout << "\nFile is empty\n";
+		return;
+	}
 
-	std::cout << "Which contact do you want to delete (Enter any data you remembre of that contact) ";
+	std::string deleteData;
+	std::cout << "Which contact do you want to delete (Enter any data you remember of that contact) ";
 
 	do {
 		std::cin >> deleteData;
+		if (find(changeContactData).second == -1) {
+			return;
+		}
 	
 	} while(find(deleteData).first);
 
@@ -67,15 +69,14 @@ void Contact::deleteContact()
 	contacts.erase(it);
 	--idOfContact;
 	changeInFile();
-
 }
 
 void Contact::addContact()
 {
 	setMap();
-	int idOfContact; 
+	int idOfContact{1}; 
 	
-	for(auto it = contacts.begin(); it != contacts.end(); ++it) {
+	for (auto it = contacts.begin(); it != contacts.end(); ++it) {
 		idOfContact = it->first;
 	}
 
@@ -87,14 +88,12 @@ void Contact::addContact()
 
 	} while(!checkFirstLetter(user.name[0]));	
 
-	
 	do {
 		std::cout << "\nFirst letter must be capital\n";
 		std::cout << "Enter lastname please ";
 		std::cin >> user.lastname;
 
 	} while(!(checkFirstLetter(user.lastname[0])));
-
 
 	do {
 		std::cout << "\nNumber must contain 9 digits and can't be repeated\n";
@@ -103,10 +102,8 @@ void Contact::addContact()
 
 	} while(!(checkNumber(user.number)));
 
-
 	std::cout << "\nEnter address please ";
 	std::cin >> user.address;
-
 
 	do {
 		std::cout << "\nEnter email address please ";
@@ -126,17 +123,16 @@ bool Contact::checkFirstLetter(char firstLetter)
 
 bool Contact::checkNumber(const std::string& currentNumber)
 {
-	if(currentNumber.size() != 9) return false;
+	if (currentNumber.size() != 9) return false;
 
-	for(int i = 0; i < currentNumber.size(); ++i) {
-		if(!(currentNumber[i] >= '0' && currentNumber[i] <= '9')) {
+	for (int i = 0; i < currentNumber.size(); ++i) {
+		if (!(currentNumber[i] >= '0' && currentNumber[i] <= '9')) {
 			return false;
 		}
 	}
 
-	for(auto it = contacts.begin(); it != contacts.end(); ++it) {
-
-		if(it->second.number == currentNumber) {
+	for (auto it = contacts.begin(); it != contacts.end(); ++it) {
+		if (it->second.number == currentNumber) {
 			return false;
 		}
 	}
@@ -145,19 +141,14 @@ bool Contact::checkNumber(const std::string& currentNumber)
 
 bool Contact::checkEmail(const std::string& currentEmail)
 {
-	for(auto it = contacts.begin(); it != contacts.end(); ++it) {
-
-		if(it->second.email == currentEmail) {
+	for (auto it = contacts.begin(); it != contacts.end(); ++it) {
+		if (it->second.email == currentEmail) {
 			return false;
 		}
 	}
-
 	const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
     		return std::regex_match(currentEmail,pattern);
-	
-	return true;
 }
-
 
 void Contact::getDatas()
 {
@@ -165,14 +156,12 @@ void Contact::getDatas()
 	std::unordered_map<std::string, Fptr>::const_iterator iter;
 
 	while(command != "stop") {
-
-	do {
-		std::cout << "\n\nEnter your command please ";
-		std::cin >> command;
+		do {
+			std::cout << "\n\nEnter your command please ";
+			std::cin >> command;
+			iter = userCommand.find(command);	
 	
-		iter = userCommand.find(command);
-		
-	} while(iter == userCommand.end());
+		} while(iter == userCommand.end());
 	
 		Fptr function_pointer = userCommand[command];
    		(this->*function_pointer)();
@@ -182,17 +171,25 @@ void Contact::getDatas()
 void Contact::readAllContacts()
 {
 	setMap();
-	for(auto it = contacts.begin(); it != contacts.end(); ++it) {
-		if(it->second.name.size() != 0) {
+	if (contacts.size() == 0) {
+		std::cout << "\nFile is empty\n";
+		return;
+	}
+
+	for (auto it = contacts.begin(); it != contacts.end(); ++it) {
+		if (it->second.name.size() != 0) {
 			std::cout << "Name\t" << it->second.name << "\tLastname\t" << it->second.lastname << "\tNumber\t" << it->second.number << "\tAddress\t" << it->second.address << "\tEmail\t" << it->second.email << '\n';
 		}
-
 	}
 }
 
 void Contact::findContact()
 {
 	setMap();
+	if (contacts.size() == 0) {
+		std::cout << "\nFile is empty\n";
+		return;
+	}
 	std::string findNameData;
 
 	std::cout << "\nWhich contact do you want to find(Enter any data of that contact please)\n";
@@ -210,21 +207,23 @@ std::pair<bool, int> Contact::find(const std::string& data)
 	auto it = contacts.begin();
 	auto currentIterData = contacts.begin();
 
-	for(; it != contacts.end(); ++it) {
-		if(it->second.name == data || it->second.lastname == data || it->second.number == data || it->second.address == data || it->second.email == data) {
+	for (; it != contacts.end(); ++it) {
+		if (it->second.name == data || it->second.lastname == data || it->second.number == data || it->second.address == data || it->second.email == data) {
 			noData = true;
 			++count;
 			currentIterData = it;
 			std::cout << "Name\t" << it->second.name << "\tLastname\t" << it->second.lastname << "\tNumber\t" << it->second.number << "\tAddress\t" << it->second.address << "\tEmail\t" << it->second.email << '\n';
 		}
 	}
-	if(!noData) {
-	std::cout << "\nData was not found\n";
-	}
 
 	std::pair<bool, int> Pair;
+	if (!noData) {
+		std::cout << "\nData was not found\n";
+		Pair.second = -1;
+		return Pair;
+	}
 
-	if(count > 1) {
+	else if (count > 1) {
 		std::cout << "Please enter extra data about user\n";
 		Pair.first = true;
 		Pair.second = 0;
@@ -241,7 +240,7 @@ std::pair<bool, int> Contact::find(const std::string& data)
 void Contact::setMap()
 {
 	read.open(nameOfFile);
-	if(!read.is_open()) {
+	if (!read.is_open()) {
 		std::cout << "Could not open file";
 		exit(0);
 	}
@@ -250,6 +249,7 @@ void Contact::setMap()
 
 	while(!read.eof()) {
 	read >> tmp;
+	if (tmp == 0) break;
 
 	read >> str;
 	userDatas.name = str;
@@ -258,10 +258,10 @@ void Contact::setMap()
 	userDatas.lastname = str;
 
 	read >> str;
-	userDatas.address = str;
+	userDatas.number = str;
 
 	read >> str;
-	userDatas.number = str;
+	userDatas.address = str;
 
 	read >> str;
 	userDatas.email = str;
@@ -269,54 +269,59 @@ void Contact::setMap()
 	contacts.emplace(tmp, userDatas);
 	++countOfDatas;
 	}
-
 	read.close();
 }
+
 void Contact::changeUserData()
 {
 	setMap();
+	if (contacts.size() == 0) {
+		std::cout << "\nFile is empty\n";
+		return;
+	}
+
 	std::cout << "Enter any data of contact you want to change";
 
 	do {
 		std::cin >> changeContactData;
+		if (find(changeContactData).second == -1) {
+			return;
+		}
 
 	} while(find(changeContactData).first);
 
-
 	do {
+		std::cout << "Enter name of the data";
+		std::cin >> changeContactName;
+		auto it = contacts.end();
 
-	std::cout << "Enter name of the data";
-	std::cin >> changeContactName;
-	auto it = contacts.end();
+		if (changeContactName == "name") {
 
-	if(changeContactName == "name") {
-
-		do {
-			std::cout << "\nFirst letter must be capital\n";
-			std::cout << "Enter new name for\t";
-			it = contacts.find(find(changeContactData).second);
-			std::cin >> it->second.name;
+			do {
+				std::cout << "\nFirst letter must be capital\n";
+				std::cout << "Enter new name for\t";
+				it = contacts.find(find(changeContactData).second);
+				std::cin >> it->second.name;
 	
-		} while(!(checkFirstLetter(it->second.name[0])));
+			} while(!(checkFirstLetter(it->second.name[0])));
 
-		changeInFile();
-		return;
+			changeInFile();
+			return;
 
-	} else if(changeContactName == "lastname") {
+		} else if (changeContactName == "lastname") {
 
-		do {
-			std::cout << "\nFirst letter must be capital\n";
-			std::cout << "Enter new lastname";
-			it = contacts.find(find(changeContactData).second);
-			std::cin >> it->second.lastname;
-
+			do {
+				std::cout << "\nFirst letter must be capital\n";
+				std::cout << "Enter new lastname";
+				it = contacts.find(find(changeContactData).second);
+				std::cin >> it->second.lastname;
 	
-		} while(!(checkFirstLetter(it->second.lastname[0])));
+			} while(!(checkFirstLetter(it->second.lastname[0])));
 
-		changeInFile();
-		return;
+			changeInFile();
+			return;
 		
-	} else if(changeContactName == "address") {
+		} else if (changeContactName == "address") {
 
 			std::cout << "\nEnter new address\n";
 			it = contacts.find(find(changeContactData).second);
@@ -325,32 +330,32 @@ void Contact::changeUserData()
 			changeInFile();
 			return;
 
-	} else if(changeContactName == "emal") {
+		} else if (changeContactName == "emal") {
 
-		do {
-			std::cout << "Email address must not be repeated";
-			std::cout << "Enter new email";
-			it = contacts.find(find(changeContactData).second);
-			std::cin >> it->second.email;
+			do {
+				std::cout << "Email address must not be repeated";
+				std::cout << "Enter new email";
+				it = contacts.find(find(changeContactData).second);
+				std::cin >> it->second.email;
 		
-		} while(!(checkEmail(it->second.email)));
+				} while(!(checkEmail(it->second.email)));
 
-		changeInFile();
-		return;
+				changeInFile();
+				return;
 
-	} else if(changeContactName == "number") {
+		} else if(changeContactName == "number") {
 	
-		do {
-			std::cout << "Phone number must not be repeated";
-			std::cout << "Enter new number";
-			it = contacts.find(find(changeContactData).second);
-			std::cin >> it->second.number;
+			do {
+				std::cout << "Phone number must not be repeated";
+				std::cout << "Enter new number";
+				it = contacts.find(find(changeContactData).second);
+				std::cin >> it->second.number;
 
-		} while(!(checkNumber(it->second.number)));
+			} while(!(checkNumber(it->second.number)));
 
-		changeInFile();
-		return;
-	 }
+			changeInFile();
+			return;
+	 	}
 
 	} while(changeContactName != "name" || changeContactName != "lastname" || changeContactName != "address" || changeContactName != "email" || changeContactName != "number");
 }
