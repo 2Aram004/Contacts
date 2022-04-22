@@ -31,7 +31,6 @@ private:
 	void stop();
 	void findContact();
 	void getDatas();
-	void commandList() const;
 	void changeInFile();
 	void setMap();
 	std::pair<bool, int> find(const std::string&);
