@@ -1,4 +1,4 @@
-#include "usercontacts.h"
+#include "contact.h"
 
 Contact::Contact() noexcept
 {
